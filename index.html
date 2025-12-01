@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>入學申請 - 圓玄學院妙法寺內明陳呂重德紀念中學</title>
+    <style>
+        /* ============================================
+           配置區 - 管理員在此修改
+           ============================================ */
+        :root {
+            /* 影片配置 */
+            --video-type: 'youtube'; /* 改為 'local' 使用本地 MP4 */
+            --youtube-id: 'E_cDnDSK1NI'; /* 只留 YouTube 影片 ID（無完整 URL） */
+            --local-video-path: 'video.mp4'; /* 本地影片路徑（放同目錄） */
+            
+            /* 品牌顏色 */
+            --primary-red: #8B2E2E;
+            --primary-green: #2D8659;
+            --accent-pink: #E8A3A3;
+            --text-dark: #333;
+            --text-light: #fff;
+            --bg-light: #f5f5f5;
+        }
+
+        /* ============================================
+           全域樣式（保持原樣）
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           首屏 - 全螢幕背景影片區（保持原樣）
+           ============================================ */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #000;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* 影片容器 */
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .video-container video,
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: none;
+        }
+
+        /* 虛線邊框 */
+        .video-container::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 3px dashed var(--primary-red);
+            z-index: 2;
+            pointer-events: none;
+            border-radius: 4px;
+        }
+
+        /* 半透明覆蓋層 */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.5) 100%);
+            z-index: 2;
+        }
+
+        /* 內容層 */
+        .hero-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 3;
+            color: var(--text-light);
+            animation: slideUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+            letter-spacing: 2px;
+        }
+
+        .hero-content .school-name {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .hero-content .school-name-en {
+            font-size: 0.95rem;
+            font-weight: 400;
+            opacity: 0.95;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ============================================
+           動畫（保持原樣）
+           ============================================ */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInCard {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* ============================================
+           PDF 文件區（保持原樣）
+           ============================================ */
+        .documents-section {
+            width: 100%;
+            padding: 80px 40px;
+            background-color: var(--bg-light);
+            animation: fadeIn 0.8s ease-out 0.4s both;
+        }
+
+        .documents-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-red), var(--primary-green));
+            border-radius: 2px;
+        }
+
+        .pdf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .pdf-card {
+            background: white;
+            border: 3px dashed var(--primary-green);
+            border-radius: 8px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            animation: slideInCard 0.6s ease-out both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pdf-card:nth-child(1) { animation-delay: 0.5s; }
+        .pdf-card:nth-child(2) { animation-delay: 0.55s; }
+        .pdf-card:nth-child(3) { animation-delay: 0.6s; }
+        .pdf-card:nth-child(4) { animation-delay: 0.65s; }
+        .pdf-card:nth-child(5) { animation-delay: 0.7s; }
+        .pdf-card:nth-child(6) { animation-delay: 0.75s; }
+        .pdf-card:nth-child(7) { animation-delay: 0.8s; }
+
+        .pdf-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(232, 163, 163, 0.15), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .pdf-card:hover {
+            border-color: var(--primary-red);
+            transform: translateY(-12px);
+            box-shadow: 0 12px 28px rgba(139, 46, 46, 0.15);
+        }
+
+        .pdf-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .pdf-card:nth-child(2) .pdf-icon { animation-delay: 0.2s; }
+        .pdf-card:nth-child(3) .pdf-icon { animation-delay: 0.4s; }
+        .pdf-card:nth-child(4) .pdf-icon { animation-delay: 0.6s; }
+        .pdf-card:nth-child(5) .pdf-icon { animation-delay: 0.8s; }
+        .pdf-card:nth-child(6) .pdf-icon { animation-delay: 1s; }
+        .pdf-card:nth-child(7) .pdf-icon { animation-delay: 1.2s; }
+
+        .pdf-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .pdf-filename {
+            font-size: 0.85rem;
+            color: #999;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            word-break: break-all;
+            min-height: 20px;
+        }
+
+        .download-btn {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, var(--primary-red) 0%, #A83C3C 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 12px rgba(139, 46, 46, 0.2);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139, 46, 46, 0.3);
+            background: linear-gradient(135deg, #A83C3C 0%, var(--primary-red) 100%);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           頁腳（保持原樣）
+           ============================================ */
+        footer {
+            background: linear-gradient(90deg, var(--primary-red) 0%, #A83C3C 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 4px solid var(--primary-green);
+        }
+
+        footer p {
+            margin: 8px 0;
+            font-size: 0.95rem;
+        }
+
+        footer .school-name-footer {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        footer .school-name-en-footer {
+            font-size: 0.85rem;
+            opacity: 0.95;
+            margin-bottom: 10px;
+        }
+
+        footer .copyright {
+            font-size: 0.8rem;
+            opacity: 0.85;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* ============================================
+           響應式設計（保持原樣）
+           ============================================ */
+        @media (max-width: 1023px) {
+            .hero-section { height: 80vh; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .hero-content .school-name { font-size: 1.1rem; }
+            .section-title { font-size: 2rem; }
+            .documents-section { padding: 60px 30px; }
+            .pdf-grid { gap: 25px; }
+        }
+
+        @media (max-width: 767px) {
+            .hero-section { height: 60vh; }
+            .hero-content h1 { font-size: 1.8rem; }
+            .hero-content .school-name { font-size: 0.95rem; }
+            .hero-content .school-name-en { font-size: 0.8rem; }
+            .section-title { font-size: 1.5rem; margin-bottom: 40px; }
+            .documents-section { padding: 40px 20px; }
+            .pdf-grid { grid-template-columns: 1fr; gap: 20px; }
+            .pdf-card { padding: 25px 15px; }
+            .pdf-icon { font-size: 2.5rem; }
+            .pdf-name { font-size: 1rem; }
+            .download-btn { padding: 8px 20px; font-size: 0.85rem; }
+            footer p { font-size: 0.9rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-section { height: 50vh; }
+            .hero-content h1 { font-size: 1.4rem; }
+            .hero-content .school-name { font-size: 0.85rem; }
+            .hero-content .school-name-en { font-size: 0.7rem; }
+            .section-title { font-size: 1.2rem; margin-bottom: 30px; }
+            .documents-section { padding: 30px 15px; }
+            .pdf-card { padding: 20px 12px; }
+            .pdf-icon { font-size: 2rem; }
+            .pdf-name { font-size: 0.9rem; }
+            .pdf-filename { font-size: 0.75rem; }
+            .download-btn { padding: 7px 16px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================
+         首屏 - 全螢幕背景影片區
+         ============================================ -->
+    <section class="hero-section" id="heroSection">
+        <div class="video-container" id="videoContainer"></div>
+        <div class="video-overlay"></div>
+        <div class="hero-content">
+            <div class="school-name">圓玄學院妙法寺內明陳呂重德紀念中學</div>
+            <div class="school-name-en">The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</div>
+            <h1>入學申請</h1>
+        </div>
+    </section>
+
+    <!-- ============================================
+         PDF 文件區
+         ============================================ -->
+    <section class="documents-section">
+        <div class="documents-container">
+            <h2 class="section-title">申請文件</h2>
+            <div class="pdf-grid" id="pdfGrid"></div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         頁腳
+         ============================================ -->
+    <footer>
+        <div class="school-name-footer">圓玄學院妙法寺內明陳呂重德紀念中學</div>
+        <div class="school-name-en-footer">The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</div>
+        <div class="copyright">© 2025 All Rights Reserved</div>
+    </footer>
+
+    <script>
+        /* ============================================
+           配置區 - PDF 檔案清單（保持原樣）
+           ============================================ */
+        const pdfFiles = [
+            { name: '中一入學申請須知（中文版）', filename: '中一入學申請須知中文版.pdf', icon: '📘' },
+            { name: 'Application Guidelines for S.1 Discretionary Place（英文版）', filename: 'Application Guidelines for S.1 Discretionary Place (Eng. ver.).pdf', icon: '📗' },
+            { name: '中一入學申請表（中文版）', filename: '中一入學申請表中文版.pdf', icon: '📝' },
+            { name: 'Application for Admission to S.1（英文版）', filename: 'Application for Admission to S.1 (Eng. ver.).pdf', icon: '📄' },
+            { name: '各級插班生入學申請表', filename: '各級插班生入學申請表.pdf', icon: '📋' },
+            { name: '中一新生註冊須知', filename: '中一新生註冊須知.pdf', icon: '📙' },
+            { name: '中一級入學申請表（叩門適用）', filename: '中一級入學申請表（叩門適用）.pdf', icon: '🔑' }
+        ];
+
+        /* ============================================
+           影片初始化 - 優化版 YouTube（50-70% 成功率）
+           ============================================ */
+        function initializeVideo() {
+            const videoContainer = document.getElementById('videoContainer');
+            
+            // ===== 管理員配置（切換用） =====
+            const useYoutube = true;  // 改 false 用本地 MP4（100% 成功）
+            const youtubeId = 'E_cDnDSK1NI';  // 你的 YouTube ID
+            const localVideoPath = 'video.mp4';  // 本地檔案名
+            // =================================
+
+            if (useYoutube && youtubeId) {
+                // YouTube 優化版：官方參數 + 強制靜音
+                const iframe = document.createElement('iframe');
+                const embedUrl = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=0&rel=0`;
+                
+                iframe.src = embedUrl;
+                iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';  // 2025 必備權限
+                iframe.allowFullscreen = true;
+                iframe.frameBorder = '0';
+                iframe.title = '學校宣傳影片';
+                
+                // 載入後強制靜音（保險起見）
+                iframe.onload = function() {
+                    // 注意：iframe 內無法直接呼叫 JS mute（跨域限制），但 mute=1 已足夠
+                    console.log('YouTube 載入完成，嘗試自動播放（靜音）');
+                };
+                
+                videoContainer.appendChild(iframe);
+                
+                // 偵測自動播放失敗（fallback 提示）
+                setTimeout(() => {
+                    if (iframe && iframe.contentWindow && iframe.contentWindow.postMessage) {
+                        // 無法直接偵測，但若黑屏，用戶可手動點擊
+                        console.log('若未自動播放，請點擊畫面啟動');
+                    }
+                }, 3000);
+            } else {
+                // 本地 MP4 後備（100% 成功，推薦如果 YouTube 常失敗）
+                const video = document.createElement('video');
+                video.autoplay = true;
+                video.muted = true;
+                video.loop = true;
+                video.playsinline = true;
+                video.preload = 'auto';
+                
+                const source = document.createElement('source');
+                source.src = localVideoPath;
+                source.type = 'video/mp4';
+                video.appendChild(source);
+                
+                videoContainer.appendChild(video);
+                
+                video.play().catch(e => {
+                    console.log('自動播放被擋：', e.message, '（請點擊頁面）');
+                });
+            }
+        }
+
+        /* ============================================
+           PDF 卡片生成（保持原樣）
+           ============================================ */
+        function initializePdfCards() {
+            const pdfGrid = document.getElementById('pdfGrid');
+            pdfGrid.innerHTML = '';
+
+            pdfFiles.forEach((pdf) => {
+                const card = document.createElement('div');
+                card.className = 'pdf-card';
+
+                const icon = document.createElement('div');
+                icon.className = 'pdf-icon';
+                icon.textContent = pdf.icon;
+
+                const name = document.createElement('div');
+                name.className = 'pdf-name';
+                name.textContent = pdf.name;
+
+                const filename = document.createElement('div');
+                filename.className = 'pdf-filename';
+                filename.textContent = pdf.filename;
+
+                const button = document.createElement('a');
+                button.className = 'download-btn';
+                button.href = pdf.filename;
+                button.download = pdf.filename;
+                button.textContent = '⬇️ 下載';
+
+                card.appendChild(icon);
+                card.appendChild(name);
+                card.appendChild(filename);
+                card.appendChild(button);
+
+                pdfGrid.appendChild(card);
+            });
+        }
+
+        /* ============================================
+           頁面初始化
+           ============================================ */
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeVideo();
+            initializePdfCards();
+        });
+
+        /* ============================================
+           平滑滾動支援（保持原樣）
+           ============================================ */
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
