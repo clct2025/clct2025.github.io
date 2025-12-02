@@ -417,18 +417,23 @@
     <section class="hero-section" id="heroSection">
         <div class="video-container" id="videoContainer"></div>
         <div class="video-overlay"></div>
-        <div class="hero-content">
-            <div class="school-name">圓玄學院妙法寺內明陳呂重德紀念中學</div>
-            <div class="school-name-en">The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</div>
-            <h1>入學申請</h1>
-            <p class="subtitle">現正接受申請</p>
+    <div class="hero-content">
+    <div class="school-name">圓玄學院妙法寺內明陳呂重德紀念中學</div>
+    <div class="school-name-en">The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</div>
+    
+    <h1 class="mb-4">入學申請 <br><span style="font-size:0.55em; font-weight:400; opacity:0.9; letter-spacing:1px;">Admissions</span></h1>
+    
+    <p class="subtitle">
+        現正接受申請<br>
+        <span style="font-size:0.7em; opacity:0.9;">Now Accepting Applications</span>
+    </p>
 
-            <div class="scroll-hint">
-                <span class="text-sm tracking-widest">向下滾動</span><br>
-                <i data-lucide="chevron-down" class="w-6 h-6 mt-2"></i>
-            </div>
-        </div>
-    </section>
+    <div class="scroll-hint">
+        <span class="text-sm tracking-widest">向下滾動</span><br>
+        <span style="font-size:0.8em; opacity:0.8;">Scroll Down</span><br>
+        <i data-lucide="chevron-down" class="w-6 h-6 mt-2"></i>
+    </div>
+</div>
 
     <!-- ============================================
          PDF 文件區
@@ -450,16 +455,51 @@
     </footer>
 
     <script>
-        /* ============================================
-           配置區 - PDF 檔案清單（保持原樣）
-           ============================================ */
-        const pdfFiles = [
-            { name: '2026-27年度_中一自行分配學位申請須知', filename: '2026-27年度_中一自行分配學位申請須知_CLCTMC.pdf', icon: '📘' },
-            { name: '2026-27年度_中一自行分配學位申請表', filename: '2026-27年度_中一自行分配學位申請表_CLCTMC.pdf', icon: '📝' },
-            { name: '各級插班生入學申請表', filename: '各級插班生入學申請表.pdf', icon: '📋' },
-            { name: '中一新生註冊須知(暫未開啟)', filename: '中一新生註冊須知.pdf', icon: '📙' },
-            { name: '中一級入學申請表（叩門適用）', filename: '中一級入學申請表（叩門適用）.pdf', icon: '🔑' }
-        ];
+
+        /* ==================== PDF 檔案清單（中英雙語版） ==================== */
+const pdfFiles = [
+    { 
+        name: '2026-27年度 中一自行分配學位申請須知', 
+        en: 'Guidelines for S.1 Discretionary Places Application 2026-27',
+        filename: '2026-27年度_中一自行分配學位申請須知_CLCTMC.pdf', 
+        icon: '📘' 
+    },
+    { 
+        name: '2026-27年度 中一自行分配學位申請表', 
+        en: 'Application Form for S.1 Discretionary Places 2026-27',
+        filename: '2026-27年度_中一自行分配學位申請表_CLCTMC.pdf', 
+        icon: '📝' 
+    },
+    { 
+        name: '各級插班生入學申請表', 
+        en: 'Application Form for Admission to All Levels',
+        filename: '各級插班生入學申請表.pdf', 
+        icon: '📋' 
+    },
+    { 
+        name: '中一級入學申請表（叩門適用）', 
+        en: 'Application Form for S.1 (Knock-on Admission)',
+        filename: '中一級入學申請表（叩門適用）.pdf', 
+        icon: '🔑' 
+    }
+];
+
+/* ==================== PDF 卡片生成（自動顯示中英雙語） ==================== */
+function initializePdfCards() {
+    const grid = document.getElementById('pdfGrid');
+    pdfFiles.forEach(pdf => {
+        grid.innerHTML += `
+            <div class="pdf-card">
+                <div class="pdf-icon">${pdf.icon}</div>
+                <div class="pdf-name">${pdf.name}</div>
+                <div style="font-size:0.88rem; color:#666; margin:8px 0 12px; line-height:1.4;">
+                    ${pdf.en}
+                </div>
+                <div class="pdf-filename">${pdf.filename}</div>
+                <a href="${pdf.filename}" download class="download-btn">Download 下載</a>
+            </div>`;
+    });
+}
 
         /* ============================================
            影片初始化 - 優化版 YouTube（50-70% 成功率）
