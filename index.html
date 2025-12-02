@@ -1,61 +1,46 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>入學申請 - 圓玄學院妙法寺內明陳呂重德紀念中學</title>
 
-    <!-- Tailwind CSS + Lucide Icons（只為首屏動畫用）-->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
         :root {
-            --primary-red: #8B2E2E;
-            --primary-green: #2D8659;
-            --accent-pink: #E8A3A3;
-            --text-dark: #333;
-            --text-light: #fff;
-            --bg-light: #f5f5f5;
+            --red: #8B2E2E;
+            --green: #2D8659;
+            --light: #f5f5f5;
         }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+        body { font-family: -apple-system,'Microsoft YaHei',sans-serif; background:var(--light); }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            color: var(--text-dark);
-            background-color: var(--bg-light);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* 新首屏：IFA 電影感風格（已優化成你學校配色） */
-        .hero-modern {
+        /* 全螢幕 YouTube 背景（IFA 電影感版） */
+        .hero {
             position: relative;
             width: 100%;
             height: 100vh;
             overflow: hidden;
-            background: black;
+            background: #000;
         }
-
-        #hero-video {
+        #yt-player {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            object-fit: cover;
-            opacity: 0.85;
+            height: 100%;
+            border: none;
         }
-
-        .hero-overlay {
+        .overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.3) 50%, rgba(139,46,46,0.6));
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(139,46,46,0.5));
         }
-
-        .hero-content-modern {
+        .content {
             position: relative;
-            z-index: 10;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -63,150 +48,112 @@
             align-items: center;
             text-align: center;
             color: white;
-            padding: 0 20px;
+            padding: 20px;
         }
-
-        .hero-content-modern h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
+        .content h1 {
+            font-size: clamp(3.5rem, 9vw, 7rem);
             font-weight: 300;
             letter-spacing: -2px;
-            margin-bottom: 1rem;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.6);
-            animation: fadeUp 1.2s ease-out;
+            margin: 1rem 0;
+            text-shadow: 0 4px 30px rgba(0,0,0,0.7);
+            animation: up 1.4s ease-out;
         }
+        .school-cn { font-size: 1.7rem; font-weight:500; letter-spacing:3px; animation: up 1.4s ease-out 0.4s both; }
+        .school-en { font-size: 1.1rem; opacity:0.9; letter-spacing:1px; animation: up 1.4s ease-out 0.6s both; }
+        .subtitle { margin-top:1rem; font-size:1.4rem; font-weight:300; animation: up 1.4s ease-out 0.8s both; }
 
-        .hero-content-modern .subtitle {
-            font-size: 1.4rem;
-            font-weight: 300;
-            opacity: 0.95;
-            animation: fadeUp 1.2s ease-out 0.3s both;
-        }
-
-        .school-name-cn {
-            font-size: 1.6rem;
-            font-weight: 500;
-            margin-bottom: 8px;
-            letter-spacing: 2px;
-            animation: fadeUp 1.2s ease-out 0.6s both;
-        }
-
-        .school-name-en {
-            font-size: 1rem;
-            opacity: 0.9;
-            letter-spacing: 1px;
-            animation: fadeUp 1.2s ease-out 0.8s both;
-        }
-
-        .scroll-hint {
+        .scroll {
             position: absolute;
             bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.6);
             animation: bounce 2s infinite;
         }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to   { opacity: 1; transform: translateY(0); }
+        @keyframes up {
+            from { opacity:0; transform:translateY(40px); }
+            to   { opacity:1; transform:translateY(0); }
         }
-
         @keyframes bounce {
-            0%,100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-10px); }
+            0%,100%{transform:translateY(0)}
+            50%{transform:translateY(-12px)}
         }
 
-        /* 保留你原本的 PDF 區和頁腳樣式（不動） */
-        .documents-section { padding: 100px 40px; background: var(--bg-light); }
-        .section-title { font-size: 2.8rem; color: var(--primary-red); text-align: center; margin-bottom: 60px; position: relative; }
-        .section-title::after { content:''; position:absolute; bottom:-15px; left:50%; transform:translateX(-50%); width:80px; height:5px; background: linear-gradient(90deg,var(--primary-red),var(--primary-green)); border-radius:3px; }
+        /* 下半部保留你原本紅綠風格 */
+        .docs { padding:100px 40px; background:var(--light); }
+        .title { font-size:2.8rem; color:var(--red); text-align:center; margin-bottom:70px; position:relative; }
+        .title::after { content:''; position:absolute; bottom:-20px; left:50%; transform:translateX(-50%); width:90px; height:6px; background:linear-gradient(90deg,var(--red),var(--green)); border-radius:3px; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:30px; max-width:1300px; margin:0 auto; }
+        .card { background:white; border:4px dashed var(--green); border-radius:16px; padding:40px 25px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.1); transition:.4s; }
+        .card:hover { transform:translateY(-20px); border-color:var(--red); box-shadow:0 25px 50px rgba(139,46,46,0.2); }
+        .icon { font-size:4rem; margin-bottom:20px; }
+        .name { font-weight:700; font-size:1.4rem; color:var(--red); margin:15px 0; }
+        .btn { display:inline-block; padding:14px 40px; background:linear-gradient(135deg,var(--red),#a83c3c); color:white; border-radius:12px; text-decoration:none; font-weight:700; box-shadow:0 8px 25px rgba(139,46,46,0.4); transition:.3s; }
+        .btn:hover { transform:translateY(-4px); box-shadow:0 12px 35px rgba(139,46,46,0.5); }
 
-        .pdf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
-        .pdf-card { background:white; border:3px dashed var(--primary-green); border-radius:12px; padding:40px 20px; text-align:center; box-shadow:0 8px 25px rgba(0,0,0,0.1); transition:all .4s; }
-        .pdf-card:hover { transform:translateY(-15px); border-color:var(--primary-red); box-shadow:0 20px 40px rgba(139,46,46,0.2); }
-        .pdf-icon { font-size:3.5rem; margin-bottom:20px; }
-        .pdf-name { font-weight:700; font-size:1.3rem; color:var(--primary-red); margin:15px 0; }
-        .download-btn { display:inline-block; padding:12px 32px; background:linear-gradient(135deg,var(--primary-red),#a83c3c); color:white; border-radius:8px; text-decoration:none; font-weight:700; box-shadow:0 6px 20px rgba(139,46,46,0.3); transition:all .3s; }
-        .download-btn:hover { transform:translateY(-3px); box-shadow:0 10px 30px rgba(139,46,46,0.4); }
-
-        footer {
-            background: linear-gradient(90deg,var(--primary-red),#a83c3c);
-            color:white; text-align:center; padding:50px 20px; border-top:5px solid var(--primary-green);
-        }
-
-        @media (max-width: 768px) {
-            .hero-content-modern h1 { font-size: 3.2rem; }
-            .school-name-cn { font-size: 1.3rem; }
-        }
+        footer { background:linear-gradient(90deg,var(--red),#a83c3c); color:white; text-align:center; padding:60px 20px; border-top:6px solid var(--green); }
     </style>
 </head>
 <body>
 
-    <!-- 新首屏：IFA 電影感風格（已完美融合你學校配色） -->
-    <header class="hero-modern">
-        <video id="hero-video" autoplay muted loop playsinline poster="fallback.jpg">
-            <!-- 推薦這支超有氣質的抽象藝術影片（免版權） -->
-            <source src="https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4" type="video/mp4">
-            您的瀏覽器不支援影片播放。
-        </video>
+<!-- 你要的 YouTube 背景版（只需改下面這一行 youtubeId） -->
+<header class="hero">
+    <iframe id="yt-player"
+            src="https://www.youtube.com/embed/這裡填你的影片ID?autoplay=1&mute=1&loop=1&playlist=這裡也要填一樣的ID&controls=0&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&enablejsapi=1"
+            allow="autoplay; encrypted-media; fullscreen"
+            allowfullscreen></iframe>
 
-        <div class="hero-overlay"></div>
+    <div class="overlay"></div>
+    <div class="content">
+        <div class="school-cn">圓玄學院妙法寺內明陳呂重德紀念中學</div>
+        <div class="school-en">The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</div>
+        <h1>入學申請</h1>
+        <p class="subtitle">2026–2027 學年招生現正進行</p>
 
-        <div class="hero-content-modern">
-            <div class="school-name-cn">圓玄學院妙法寺內明陳呂重德紀念中學</div>
-            <div class="school-name-en">The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</div>
-            <h1>入學申請</h1>
-            <p class="subtitle">2026–2027 學年 現正接受申請</p>
-
-            <div class="scroll-hint">
-                <span class="text-sm tracking-widest">向下滾動</span><br>
-                <i data-lucide="chevron-down" class="w-6 h-6 mt-2"></i>
-            </div>
+        <div class="scroll">
+            <div>向下滾動</div>
+            <i data-lucide="chevron-down" class="w-8 h-8 mt-2"></i>
         </div>
-    </header>
+    </div>
+</header>
 
-    <!-- 你原本的 PDF 區（完全不動） -->
-    <section class="documents-section">
-        <div class="documents-container">
-            <h2 class="section-title">申請文件</h2>
-            <div class="pdf-grid" id="pdfGrid"></div>
-        </div>
-    </section>
+<!-- 申請文件區（你原本的5份） -->
+<section class="docs">
+    <h2 class="title">申請文件</h2>
+    <div class="grid" id="grid"></div>
+</section>
 
-    <!-- 你原本的頁腳 -->
-    <footer>
-        <div class="school-name-footer">圓玄學院妙法寺內明陳呂重德紀念中學</div>
-        <div class="school-name-en-footer">The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</div>
-        <div class="copyright">© 2025 All Rights Reserved</div>
-    </footer>
+<footer>
+    <div style="font-size:1.3rem;font-weight:700;">圓玄學院妙法寺內明陳呂重德紀念中學</div>
+    <div style="opacity:0.9;margin:10px 0;">The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</div>
+    <div style="margin-top:20px;opacity:0.8;">© 2025 All Rights Reserved</div>
+</footer>
 
-    <script>
-        // PDF 清單（已刪除英文版）
-        const pdfFiles = [
-            { name: '2026-27年度_中一自行分配學位申請須知', filename: '2026-27年度_中一自行分配學位申請須知_CLCTMC.pdf', icon: 'Book' },
-            { name: '2026-27年度_中一自行分配學位申請表', filename: '2026-27年度_中一自行分配學位申請表_CLCTMC.pdf', icon: 'Pen' },
-            { name: '各級插班生入學申請表', filename: '各級插班生入學申請表.pdf', icon: 'Clipboard' },
-            { name: '中一新生註冊須知(暫未開啟)', filename: '中一新生註冊須知.pdf', icon: 'Orange Book' },
-            { name: '中一級入學申請表（叩門適用）', filename: '中一級入學申請表（叩門適用）.pdf', icon: 'Key' }
-        ];
+<script>
+    // 只需要改這一行！！把你的 YouTube ID 貼進來兩次
+    const youtubeId = "g1iS7v_XPu0";   // ←←←← 改成你選好的影片 ID
 
-        // 產生 PDF 卡片
-        document.addEventListener('DOMContentLoaded', () => {
-            const grid = document.getElementById('pdfGrid');
-            pdfFiles.forEach(pdf => {
-                grid.innerHTML += `
-                    <div class="pdf-card">
-                        <div class="pdf-icon">${pdf.icon}</div>
-                        <div class="pdf-name">${pdf.name}</div>
-                        <div style="color:#999;font-size:0.9rem;margin:10px 0;">${pdf.filename}</div>
-                        <a href="${pdf.filename}" download class="download-btn">Download 下載</a>
-                    </div>
-                `;
-            });
+    document.getElementById('yt-player').src = 
+        `https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=0&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&enablejsapi=1`;
 
-            // Lucide 圖示初始化
-            lucide.createIcons();
-        });
-    </script>
+    // PDF 列表
+    const files = [
+        {n:'2026-27年度 中一自行分配學位申請須知',f:'2026-27年度_中一自行分配學位申請須知_CLCTMC.pdf',i:'Blue Book'},
+        {n:'2026-27年度 中一自行分配學位申請表',f:'2026-27年度_中一自行分配學位申請表_CLCTMC.pdf',i:'Pen'},
+        {n:'各級插班生入學申請表',f:'各級插班生入學申請表.pdf',i:'Clipboard'},
+        {n:'中一新生註冊須知(暫未開啟)',f:'中一新生註冊須知.pdf',i:'Orange Book'},
+        {n:'中一級入學申請表（叩門適用）',f:'中一級入學申請表（叩門適用）.pdf',i:'Key'}
+    ];
+
+    const grid = document.getElementById('grid');
+    files.forEach(f=>{
+        grid.innerHTML += `
+        <div class="card">
+            <div class="icon">${f.i}</div>
+            <div class="name">${f.n}</div>
+            <a href="${f.f}" download class="btn">Download 下載</a>
+        </div>`;
+    });
+
+    lucide.createIcons();
+</script>
 </body>
 </html>
