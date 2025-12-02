@@ -484,22 +484,6 @@ const pdfFiles = [
     }
 ];
 
-/* ==================== PDF 卡片生成（自動顯示中英雙語） ==================== */
-function initializePdfCards() {
-    const grid = document.getElementById('pdfGrid');
-    pdfFiles.forEach(pdf => {
-        grid.innerHTML += `
-            <div class="pdf-card">
-                <div class="pdf-icon">${pdf.icon}</div>
-                <div class="pdf-name">${pdf.name}</div>
-                <div style="font-size:0.88rem; color:#666; margin:8px 0 12px; line-height:1.4;">
-                    ${pdf.en}
-                </div>
-                <div class="pdf-filename">${pdf.filename}</div>
-                <a href="${pdf.filename}" download class="download-btn">Download 下載</a>
-            </div>`;
-    });
-}
 
         /* ============================================
            影片初始化 - 優化版 YouTube（50-70% 成功率）
