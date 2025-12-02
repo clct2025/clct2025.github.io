@@ -5,22 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>入學申請 - 圓玄學院妙法寺內明陳呂重德紀念中學</title>
     <style>
-           /* ============================================
-           配置區 - 管理員在此修改（新增 Vimeo 開關）
+        /* ============================================
+           配置區 - 管理員在此修改
            ============================================ */
         :root {
-            /* ==== 新增：強制使用 Vimeo（改 false 才會回到原本 YouTube/本地）==== */
-            --force-vimeo: true;                                    /* 改成 false 就會停用 Vimeo */
-            --vimeo-id: '1142314521';                               /* 你的 Vimeo 影片 ID（就是網址最後那串數字） */
-            
-            /* 以下保留你原本設定，現在不會用到，但保留備用 */
-            --video-type: 'youtube';
-            --youtube-id: 'g1iS7v_XPu0';
-            --local-video-path: '學校介紹影片幻燈片.mp4';
+            /* 影片配置 */
+            --video-type: 'youtube'; /* 改為 'local' 使用本地 MP4 */
+            --youtube-id: 'g1iS7v_XPu0'; /* 只留 YouTube 影片 ID（無完整 URL） */
+            --local-video-path: '學校介紹影片幻燈片.mp4'; /* 本地影片路徑（放同目錄） */
             
             /* 品牌顏色 */
             --primary-red: #8B2E2E;
             --primary-green: #2D8659;
+            --accent-pink: #E8A3A3;
+            --text-dark: #333;
             --text-light: #fff;
             --bg-light: #f5f5f5;
         }
@@ -60,12 +58,12 @@
 
         /* 影片容器 */
         .video-container {
-            position:absolute;
-            top:50%; left:50%;
-            width:100vw;
-            height:100vh;
-            transform:translate(-50%,-50%);
-            z-index:1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
         }
 
         .video-container video,
@@ -461,27 +459,6 @@
             { name: '中一新生註冊須知(暫未開啟)', filename: '中一新生註冊須知.pdf', icon: '📙' },
             { name: '中一級入學申請表（叩門適用）', filename: '中一級入學申請表（叩門適用）.pdf', icon: '🔑' }
         ];
-         /* ============================================
-           影片初始化（新增 Vimeo 優先判斷）
-           ============================================ */
-        function initializeVideo() {
-            const container = document.getElementById('videoContainer');
-
-            // 【重點】強制使用 Vimeo（你現在要的）
-            if (getComputedStyle(document.documentElement).getPropertyValue('--force-vimeo').trim() === 'true') {
-                const vimeoId = getComputedStyle(document.documentElement).getPropertyValue('--vimeo-id').trim();
-                
-                const iframe = document.createElement('iframe');
-                iframe.src = `https://player.vimeo.com/video/${vimeoId}?autoplay=1&loop=1&muted=1&background=1&title=0&byline=0&portrait=0`;
-                iframe.allow = "autoplay; fullscreen";
-                iframe.allowFullscreen = true;
-                iframe.frameBorder = "0";
-                iframe.title = "學校宣傳影片（Vimeo）";
-                
-                container.appendChild(iframe);
-                console.log('已啟用 Vimeo 滿版背景影片：' + vimeoId);
-                return; // 直接結束，不執行下面的 YouTube 或本地
-            }
 
         /* ============================================
            影片初始化 - 優化版 YouTube（50-70% 成功率）
@@ -542,7 +519,6 @@
                 });
             }
         }
-    }
 
         /* ============================================
            PDF 卡片生成（保持原樣）
