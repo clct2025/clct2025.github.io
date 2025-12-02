@@ -47,25 +47,15 @@
         /* ============================================
            首屏 - 全螢幕背景影片區（保持原樣）
            ============================================ */
-        .hero-section {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-            background-color: #000;
-            animation: fadeIn 0.8s ease-out;
-        }
 
-        /* 影片容器 */
-        .video-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
+        .hero-section{
+            position:relative;width:100%;height:100vh;overflow:hidden;background:#000;
         }
-
+        .video-container{
+            position:absolute;
+            top:0; left:0; right:0; bottom:0;
+            width:100%; height:100%;
+        }
         .video-container video,
         .video-container iframe {
             position:absolute;
@@ -75,7 +65,7 @@
             min-width:177.78vh;     /* 16:9 比例關鍵 */
             min-height:56.25vw;         /* 16:9 比例關鍵 */
             transform:translate(-50%,-50%);
-            pointer-events:none;
+            pointer-events:none;    /* 防止點擊干擾 */
         }
 
         /* 虛線邊框 */
@@ -182,7 +172,7 @@
             50% { transform: translateY(-8px); }
         }
 
-    /* ============================================
+        /* ============================================
            PDF 文件區（保持原樣）
            ============================================ */
         .documents-section {
@@ -417,33 +407,29 @@
     <section class="hero-section" id="heroSection">
         <div class="video-container" id="videoContainer"></div>
         <div class="video-overlay"></div>
-    <div class="hero-content">
-    <div class="school-name">圓玄學院妙法寺內明陳呂重德紀念中學</div>
-    <div class="school-name-en">The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</div>
-    
-    <h1 class="mb-4">入學申請 <br><span style="font-size:0.55em; font-weight:400; opacity:0.9; letter-spacing:1px;">Application for Admission</span></h1>
-    
-    <p class="subtitle">
-        現正接受申請<br>
-        <span style="font-size:0.7em; opacity:0.9;">Now opensow</span>
-    </p>
+        <div class="hero-content">
+            <div class="school-name">圓玄學院妙法寺內明陳呂重德紀念中學</div>
+            <div class="school-name-en">The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</div>
+            <h1>入學申請</h1>
+            <p class="subtitle">現正接受申請</p>
 
-    <div class="scroll-hint">
-        <span class="text-sm tracking-widest">向下滾動</span><br>
-        <span style="font-size:0.8em; opacity:0.8;">Scroll down for details</span><br>
-        <i data-lucide="chevron-down" class="w-6 h-6 mt-2"></i>
-    </div>
-</div>
+            <div class="scroll-hint">
+                <span class="text-sm tracking-widest">向下滾動</span><br>
+                <i data-lucide="chevron-down" class="w-6 h-6 mt-2"></i>
+            </div>
+        </div>
+    </section>
 
     <!-- ============================================
          PDF 文件區
          ============================================ -->
-        <section class="documents-section">
+    <section class="documents-section">
         <div class="documents-container">
             <h2 class="section-title">申請文件</h2>
             <div class="pdf-grid" id="pdfGrid"></div>
         </div>
     </section>
+
     <!-- ============================================
          頁腳
          ============================================ -->
@@ -453,13 +439,14 @@
         <div class="copyright">© 2025 All Rights Reserved</div>
     </footer>
 
- <script>
-
-const pdfFiles = [
+    <script>
+        /* ============================================
+           配置區 - PDF 檔案清單（保持原樣）
+           ============================================ */
+        const pdfFiles = [
             { name: '2026-27年度_中一自行分配學位申請須知', filename: '2026-27年度_中一自行分配學位申請須知_CLCTMC.pdf', icon: '📘' },
             { name: '2026-27年度_中一自行分配學位申請表', filename: '2026-27年度_中一自行分配學位申請表_CLCTMC.pdf', icon: '📝' },
             { name: '各級插班生入學申請表', filename: '各級插班生入學申請表.pdf', icon: '📋' },
-            { name: '中一新生註冊須知(暫未開啟)', filename: '中一新生註冊須知.pdf', icon: '📙' },
             { name: '中一級入學申請表（叩門適用）', filename: '中一級入學申請表（叩門適用）.pdf', icon: '🔑' }
         ];
 
@@ -523,43 +510,44 @@ const pdfFiles = [
             }
         }
 
-/* ============================================
-   PDF 卡片生成（只需要改這一行！）
-   ============================================ */
-    function initializePdfCards() {
-    const pdfGrid = document.getElementById('pdfGrid');
-    pdfGrid.innerHTML = '';
+        /* ============================================
+           PDF 卡片生成（保持原樣）
+           ============================================ */
+        function initializePdfCards() {
+            const pdfGrid = document.getElementById('pdfGrid');
+            pdfGrid.innerHTML = '';
 
-    pdfFiles.forEach((pdf) => {
-        const card = document.createElement('div');
-        card.className = 'pdf-card';
+            pdfFiles.forEach((pdf) => {
+                const card = document.createElement('div');
+                card.className = 'pdf-card';
 
-        const icon = document.createElement('div');
-        icon.className = 'pdf-icon';
-        icon.textContent = pdf.icon;
+                const icon = document.createElement('div');
+                icon.className = 'pdf-icon';
+                icon.textContent = pdf.icon;
 
-        const name = document.createElement('div');
-        name.className = 'pdf-name';
-        name.textContent = pdf.name;   // ← 這一行從 textContent 改成 innerHTML
+                const name = document.createElement('div');
+                name.className = 'pdf-name';
+                name.textContent = pdf.name;
 
-        const filename = document.createElement('div');
-        filename.className = 'pdf-filename';
-        filename.textContent = pdf.filename;
+                const filename = document.createElement('div');
+                filename.className = 'pdf-filename';
+                filename.textContent = pdf.filename;
 
-        const button = document.createElement('a');
-        button.className = 'download-btn';
-        button.href = pdf.filename;
-        button.download = pdf.filename;
-        button.textContent = '下載';
+                const button = document.createElement('a');
+                button.className = 'download-btn';
+                button.href = pdf.filename;
+                button.download = pdf.filename;
+                button.textContent = '⬇️ 下載';
 
-        card.appendChild(icon);
-        card.appendChild(name);
-        card.appendChild(filename);
-        card.appendChild(button);
+                card.appendChild(icon);
+                card.appendChild(name);
+                card.appendChild(filename);
+                card.appendChild(button);
 
-        pdfGrid.appendChild(card);
-    });
-}
+                pdfGrid.appendChild(card);
+            });
+        }
+
         /* ============================================
            頁面初始化
            ============================================ */
