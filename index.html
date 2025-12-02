@@ -421,16 +421,16 @@
     <div class="school-name">圓玄學院妙法寺內明陳呂重德紀念中學</div>
     <div class="school-name-en">The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</div>
     
-    <h1 class="mb-4">入學申請 <br><span style="font-size:0.55em; font-weight:400; opacity:0.9; letter-spacing:1px;">Admissions</span></h1>
+    <h1 class="mb-4">入學申請 <br><span style="font-size:0.55em; font-weight:400; opacity:0.9; letter-spacing:1px;">Application for Admission</span></h1>
     
     <p class="subtitle">
         現正接受申請<br>
-        <span style="font-size:0.7em; opacity:0.9;">Now Accepting Applications</span>
+        <span style="font-size:0.7em; opacity:0.9;">Now opensow</span>
     </p>
 
     <div class="scroll-hint">
         <span class="text-sm tracking-widest">向下滾動</span><br>
-        <span style="font-size:0.8em; opacity:0.8;">Scroll Down</span><br>
+        <span style="font-size:0.8em; opacity:0.8;">Scroll down for details</span><br>
         <i data-lucide="chevron-down" class="w-6 h-6 mt-2"></i>
     </div>
 </div>
@@ -440,7 +440,10 @@
          ============================================ -->
     <section class="documents-section">
         <div class="documents-container">
-            <h2 class="section-title">申請文件</h2>
+<h2 class="section-title">
+    申請文件<br>
+    <span style="font-size:0.7em; opacity:0.9; font-weight:500;">Documents</span>
+</h2>
             <div class="pdf-grid" id="pdfGrid"></div>
         </div>
     </section>
@@ -457,33 +460,29 @@
     <script>
 
         /* ==================== PDF 檔案清單（中英雙語版） ==================== */
+/* ==================== PDF 檔案清單（中英雙語版） ==================== */
 const pdfFiles = [
     { 
-        name: '2026-27年度 中一自行分配學位申請須知', 
-        en: 'Guidelines for S.1 Discretionary Places Application 2026-27',
+        name: '2026-27年度 中一自行分配學位申請須知<br><span style="font-size:0.85em; opacity:0.8;">2026-27 Application Guide for S.1 Discretionary Places</span>', 
         filename: '2026-27年度_中一自行分配學位申請須知_CLCTMC.pdf', 
         icon: '📘' 
     },
     { 
-        name: '2026-27年度 中一自行分配學位申請表', 
-        en: 'Application Form for S.1 Discretionary Places 2026-27',
+        name: '2026-27年度 中一自行分配學位申請表<br><span style="font-size:0.85em; opacity:0.8;">2026-27 Application Form for S.1 Discretionary Places</span>', 
         filename: '2026-27年度_中一自行分配學位申請表_CLCTMC.pdf', 
         icon: '📝' 
     },
     { 
-        name: '各級插班生入學申請表', 
-        en: 'Application Form for Admission to All Levels',
+        name: '各級插班生入學申請表<br><span style="font-size:0.85em; opacity:0.8;">2026-27 Application Form for S.1 Discretionary Places</span>', 
         filename: '各級插班生入學申請表.pdf', 
         icon: '📋' 
     },
     { 
-        name: '中一級入學申請表（叩門適用）', 
-        en: 'Application Form for S.1 (Knock-on Admission)',
+        name: '中一級入學申請表（叩門適用）<br><span style="font-size:0.85em; opacity:0.8;">Application Form for S.1 Students</span>', 
         filename: '中一級入學申請表（叩門適用）.pdf', 
         icon: '🔑' 
     }
 ];
-
 
         /* ============================================
            影片初始化 - 優化版 YouTube（50-70% 成功率）
