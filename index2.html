@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>入學申請 - 圓玄學院妙法寺內明陳呂重德紀念中學</title>
+    <title>Admission Application - The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</title>
     <style>
         /* ============================================
            配置區 - 管理員在此修改
@@ -434,16 +434,15 @@
         }
     </style>
 </head>
-<!-- ============== 返回 & 語言切換按鈕 ============== -->
-<div class="header-controls">
-    <a href="https://www.clctmc.edu.hk" class="back-btn" target="_blank">
-        ← 返回學校網頁
-    </a>
-    
-    <!-- 改成 <a> 標籤，直接跳轉到英文版頁面 -->
-    <a href="index2.html" class="lang-toggle">ENG</a>
-</div>
 <body>
+    <!-- ============== 返回 & 語言切換按鈕 ============== -->
+    <div class="header-controls">
+        <a href="https://www.clctmc.edu.hk" class="back-btn" target="_blank">
+            Back to School Website
+        </a>
+            <a href="index2.html" class="lang-toggle">中文</a>
+    </div>
+
     <!-- ============================================
          首屏 - 全螢幕背景影片區
          ============================================ -->
@@ -451,13 +450,12 @@
         <div class="video-container" id="videoContainer"></div>
         <div class="video-overlay"></div>
         <div class="hero-content">
-            <div class="school-name">圓玄學院妙法寺內明陳呂重德紀念中學</div>
-            <div class="school-name-en">The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</div>
-            <h1>入學申請</h1>
-            <p class="subtitle">現正接受申請</p>
+            <div class="school-name">The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</div>
+            <h1>Admission Application</h1>
+            <p class="subtitle">Applications are now open</p>
 
             <div class="scroll-hint">
-                <span class="text-sm tracking-widest">向下滾動</span><br>
+                <span class="text-sm tracking-widest">Scroll Down</span><br>
                 <i data-lucide="chevron-down" class="w-6 h-6 mt-2"></i>
             </div>
         </div>
@@ -468,7 +466,7 @@
          ============================================ -->
     <section class="documents-section">
         <div class="documents-container">
-            <h2 class="section-title">申請文件</h2>
+            <h2 class="section-title">Application Documents</h2>
             <div class="pdf-grid" id="pdfGrid"></div>
         </div>
     </section>
@@ -477,8 +475,7 @@
          頁腳
          ============================================ -->
     <footer>
-        <div class="school-name-footer">圓玄學院妙法寺內明陳呂重德紀念中學</div>
-        <div class="school-name-en-footer">The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</div>
+        <div class="school-name-footer">The Yuen Yuen Institute MFBM Nei Ming Chan Lui Chung Tak Memorial College</div>
         <div class="copyright">© 2025 All Rights Reserved</div>
     </footer>
 
@@ -487,13 +484,13 @@
            配置區 - PDF 檔案清單（保持原樣）
            ============================================ */
         const pdfFiles = [
-            { name: '2026-27年度_中一自行分配學位申請須知', filename: '2026-27年度_中一自行分配學位申請須知_CLCTMC.pdf', icon: '📘' },
-            { name: '2026-27年度_中一自行分配學位申請表', filename: '2026-27年度_中一自行分配學位申請表_CLCTMC.pdf', icon: '📝' },
-            { name: '各級插班生入學申請表', filename: '各級插班生入學申請表.pdf', icon: '📋' },
-            { name: '中一級入學申請表（叩門適用）', filename: '中一級入學申請表（叩門適用）.pdf', icon: '🔑' }
+            { name: 'S.1 Discretionary Places Application Guidelines 2026-2027', filename: '2026-27_S1_DP_Application_Guidelines_CLCTMC.pdf', icon: '📘' },
+            { name: 'S.1 Discretionary Places Application Form 2026-2027', filename: '2026-27_S1_DP_Application_Form_CLCTMC.pdf', icon: '📝' },
+            { name: 'Application Form for Transfer Students (All Levels)', filename: 'Transfer_Student_Application_Form.pdf', icon: '📋' },
+            { name: 'S.1 Admission Application Form (Late Application)', filename: 'S1_Late_Application_Form.pdf', icon: '🔑' }
         ];
 
-        /* ============================================
+  /* ============================================
            影片初始化 - 優化版 YouTube（50-70% 成功率）
            ============================================ */
         function initializeVideo() {
@@ -552,7 +549,6 @@
                 });
             }
         }
-
         /* ============================================
            PDF 卡片生成（保持原樣）
            ============================================ */
@@ -580,13 +576,12 @@
                 button.className = 'download-btn';
                 button.href = pdf.filename;
                 button.download = pdf.filename;
-                button.textContent = '⬇️ 下載';
+                button.textContent = 'Download';
 
                 card.appendChild(icon);
                 card.appendChild(name);
                 card.appendChild(filename);
                 card.appendChild(button);
-
                 pdfGrid.appendChild(card);
             });
         }
@@ -598,8 +593,7 @@
             initializeVideo();
             initializePdfCards();
         });
-
-        /* ============================================
+         /* ============================================
            平滑滾動支援（保持原樣）
            ============================================ */
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -614,4 +608,3 @@
     </script>
 </body>
 </html>
-
