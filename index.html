@@ -544,44 +544,43 @@ const pdfFiles = [
             }
         }
 
-        /* ============================================
-           PDF 卡片生成（保持原樣）
-           ============================================ */
-        function initializePdfCards() {
-            const pdfGrid = document.getElementById('pdfGrid');
-            pdfGrid.innerHTML = '';
+/* ============================================
+   PDF 卡片生成（只需要改這一行！）
+   ============================================ */
+    function initializePdfCards() {
+    const pdfGrid = document.getElementById('pdfGrid');
+    pdfGrid.innerHTML = '';
 
-            pdfFiles.forEach((pdf) => {
-                const card = document.createElement('div');
-                card.className = 'pdf-card';
+    pdfFiles.forEach((pdf) => {
+        const card = document.createElement('div');
+        card.className = 'pdf-card';
 
-                const icon = document.createElement('div');
-                icon.className = 'pdf-icon';
-                icon.textContent = pdf.icon;
+        const icon = document.createElement('div');
+        icon.className = 'pdf-icon';
+        icon.textContent = pdf.icon;
 
-                const name = document.createElement('div');
-                name.className = 'pdf-name';
-                name.textContent = pdf.name;
+        const name = document.createElement('div');
+        name.className = 'pdf-name';
+        name.innerHTML = pdf.name;   // ← 這一行從 textContent 改成 innerHTML
 
-                const filename = document.createElement('div');
-                filename.className = 'pdf-filename';
-                filename.textContent = pdf.filename;
+        const filename = document.createElement('div');
+        filename.className = 'pdf-filename';
+        filename.textContent = pdf.filename;
 
-                const button = document.createElement('a');
-                button.className = 'download-btn';
-                button.href = pdf.filename;
-                button.download = pdf.filename;
-                button.textContent = '⬇️ 下載';
+        const button = document.createElement('a');
+        button.className = 'download-btn';
+        button.href = pdf.filename;
+        button.download = pdf.filename;
+        button.textContent = '下載';
 
-                card.appendChild(icon);
-                card.appendChild(name);
-                card.appendChild(filename);
-                card.appendChild(button);
+        card.appendChild(icon);
+        card.appendChild(name);
+        card.appendChild(filename);
+        card.appendChild(button);
 
-                pdfGrid.appendChild(card);
-            });
-        }
-
+        pdfGrid.appendChild(card);
+    });
+}
         /* ============================================
            頁面初始化
            ============================================ */
