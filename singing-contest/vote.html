@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>觀眾投票</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div id="vote-card" class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden transition-all-300 transform">
+        
+        <!-- Header -->
+        <div class="bg-blue-600 p-6 text-white text-center">
+            <h1 class="text-xl font-bold">猜猜我是誰？</h1>
+            <p class="text-blue-100 text-sm mt-1">請在演唱結束前提交您的答案</p>
+        </div>
+
+        <!-- Content Container -->
+        <div class="p-6 space-y-6">
+            
+            <!-- STATE: LOADING -->
+            <div id="state-loading" class="text-center py-8">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto"></div>
+                <p class="mt-4 text-gray-500">連接比賽現場中...</p>
+            </div>
+
+            <!-- STATE: WRONG SINGER / NOT ACTIVE -->
+            <div id="state-inactive" class="text-center py-8 hidden">
+                <i data-lucide="clock" class="w-12 h-12 text-gray-300 mx-auto mb-3"></i>
+                <h3 class="text-lg font-bold text-gray-700">目前沒有進行中的投票</h3>
+                <p class="text-gray-500 mt-2 text-sm">請等待主持人宣佈開始或確認您掃描了正確的 QR Code。</p>
+                <button onclick="location.reload()" class="mt-6 text-blue-600 font-medium text-sm">重新整理</button>
+            </div>
+
+            <!-- STATE: FORM -->
+            <form id="vote-form" class="space-y-6 hidden">
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 text-center">
+                    <span class="text-xs text-blue-500 font-bold tracking-wide uppercase">正在演唱</span>
+                    <div class="text-lg font-medium text-blue-900 mt-1">神秘歌手</div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">您認為這位歌手是？</label>
+                    <select id="guess-select" class="w-full p-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none appearance-none text-lg" required>
+                        <option value="" disabled selected>請選擇您的答案</option>
+                        <!-- Options populated by JS -->
+                    </select>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-lg shadow-lg shadow-blue-600/30 active:scale-95 transition transform">
+                    確認提交
+                </button>
+            </form>
+
+            <!-- STATE: SUCCESS -->
+            <div id="state-success" class="text-center py-8 hidden">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="check" class="w-8 h-8 text-green-600"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800">投票成功！</h3>
+                <p class="text-gray-500 mt-2">您的答案已記錄。</p>
+                <p class="mt-6 text-sm text-gray-400">請關注大螢幕查看結果</p>
+            </div>
+
+             <!-- STATE: ALREADY VOTED -->
+             <div id="state-voted" class="text-center py-8 hidden">
+                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="alert-circle" class="w-8 h-8 text-yellow-600"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800">您已經投過票了</h3>
+                <p class="text-gray-500 mt-2">每個歌手只能猜測一次。</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module" src="app_vote.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

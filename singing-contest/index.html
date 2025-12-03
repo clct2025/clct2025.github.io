@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>歌唱比賽 - 現場互動系統</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700;900&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; }
+        .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        .animate-pop { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        @keyframes progress { from { width: 0%; } to { width: 100%; } }
+    </style>
+</head>
+<body class="bg-slate-950 text-white h-screen flex flex-col overflow-hidden relative selection:bg-blue-500">
+
+    <!-- Background Effects -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+    </div>
+
+    <!-- Display Application (Projector View) -->
+    <div id="app-display" class="flex flex-col h-full w-full transition-all duration-500 relative z-10 hidden">
+        
+        <!-- Header -->
+        <header class="h-20 border-b border-white/10 flex items-center justify-between px-8 bg-slate-900/80 backdrop-blur-md shrink-0">
+            <div class="flex items-center space-x-4">
+                <div class="p-2 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg shadow-lg shadow-blue-500/20">
+                    <i data-lucide="mic-2" class="text-white w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-widest text-white">MYSTERY SINGER</h1>
+                    <p class="text-xs text-slate-400 tracking-widest uppercase">2025 Live Contest</p>
+                </div>
+            </div>
+            <div id="status-indicator" class="px-4 py-1.5 rounded-full text-sm font-bold bg-slate-800 text-slate-400 border border-slate-700 shadow-inner">
+                系統就緒
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 relative flex items-center justify-center p-6 w-full h-full overflow-hidden">
+            
+            <!-- View: IDLE -->
+            <div id="view-idle" class="text-center animate-fade-in hidden max-w-3xl mx-auto">
+                <div class="mb-8 relative">
+                    <div class="absolute inset-0 bg-blue-500 blur-[100px] opacity-20"></div>
+                    <h1 class="relative text-7xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 leading-tight">
+                        歌唱<br>大賽
+                    </h1>
+                </div>
+                <p class="text-2xl md:text-3xl text-slate-300 font-light tracking-wide">請準備好您的手機，互動即將開始</p>
+                <div class="mt-12 flex justify-center gap-4">
+                    <span class="w-3 h-3 bg-white/20 rounded-full animate-bounce"></span>
+                    <span class="w-3 h-3 bg-white/20 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                    <span class="w-3 h-3 bg-white/20 rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
+                </div>
+            </div>
+
+            <!-- View: ACTIVE (Photo + QR) -->
+            <div id="view-active" class="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center hidden opacity-0 transition-opacity duration-500">
+                <!-- Photo Section -->
+                <div class="relative group mx-auto w-full max-w-lg lg:max-w-full animate-fade-in">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition duration-1000"></div>
+                    <div class="relative aspect-[3/4] bg-slate-800 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+                        <img id="singer-photo" src="" alt="Singer" class="w-full h-full object-cover transition duration-700 transform group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent flex flex-col justify-end p-10">
+                            <h2 class="text-4xl font-bold mb-2 text-white drop-shadow-lg">猜猜我是誰？</h2>
+                            <p class="text-blue-300 text-lg font-medium drop-shadow-md">觀察照片線索，掃碼投票</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interaction Section -->
+                <div class="space-y-10 text-center lg:text-left animate-fade-in" style="animation-delay: 0.2s;">
+                    <div class="bg-slate-900/80 p-10 rounded-3xl border border-slate-700 shadow-2xl backdrop-blur-sm flex flex-col items-center">
+                        <h3 class="text-3xl font-bold mb-8 text-white">掃描投票</h3>
+                        <div class="p-4 bg-white rounded-2xl shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] mb-4 cursor-pointer group relative" title="點擊設定網路位址" id="btn-open-ip-config">
+                            <div id="qrcode"></div>
+                            <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors rounded-xl">
+                                <i data-lucide="settings" class="text-transparent group-hover:text-slate-800 w-8 h-8 transition-colors"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Localhost Warning -->
+                        <div id="localhost-warning" class="hidden mb-4 px-4 py-2 bg-amber-500/20 border border-amber-500/50 rounded-lg text-amber-300 text-sm flex items-center gap-2">
+                            <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                            <span>檢測到 Localhost，點擊上方 QR Code 設定 IP</span>
+                        </div>
+
+                        <div class="flex items-center gap-3 text-slate-300 text-lg">
+                            <div class="p-2 bg-slate-800 rounded-lg">
+                                <i data-lucide="smartphone" class="w-6 h-6"></i>
+                            </div>
+                            <span class="text-sm text-slate-400">位址: <span id="qr-url-display" class="font-mono text-xs">...</span></span>
+                        </div>
+                    </div>
+
+                    <div id="voting-status-box" class="relative p-8 rounded-2xl bg-gradient-to-br from-blue-900/40 to-purple-900/40 border border-blue-500/30 text-center overflow-hidden">
+                        <h4 id="voting-status-text" class="text-4xl font-bold text-blue-400 mb-2 relative z-10">準備中</h4>
+                        <p id="voting-subtext" class="text-blue-200/70 text-xl relative z-10">等待主持人開始...</p>
+                        
+                        <!-- Timer Bar -->
+                        <div id="timer-bar" class="absolute bottom-0 left-0 w-full h-2 bg-blue-950/50 hidden">
+                            <div id="timer-progress" class="h-full bg-gradient-to-r from-blue-400 to-purple-400 w-0"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View: CANDIDATES (Show Top 5) -->
+            <div id="view-candidates" class="w-full max-w-7xl hidden opacity-0 transition-opacity duration-500">
+                <div class="text-center mb-12 animate-fade-in">
+                    <h2 class="text-5xl font-black text-white mb-4 drop-shadow-lg">觀眾猜測結果</h2>
+                    <p class="text-2xl text-blue-300 font-light">票數最高的候選人是...</p>
+                </div>
+                
+                <div id="candidates-grid" class="flex flex-wrap justify-center gap-8 p-4">
+                    <!-- Candidates injected here -->
+                </div>
+            </div>
+
+            <!-- View: RESULTS (Show Final Answer) -->
+            <div id="view-results" class="w-full max-w-7xl hidden opacity-0 transition-opacity duration-500">
+                <div class="text-center mb-12 animate-fade-in">
+                    <h2 class="text-5xl font-black text-white mb-4 drop-shadow-lg">正確答案揭曉</h2>
+                    <div class="inline-block px-8 py-4 bg-green-600/20 border border-green-500/50 rounded-full shadow-[0_0_50px_-10px_rgba(74,222,128,0.3)]">
+                        <p id="result-singer-name" class="text-4xl text-green-400 font-black tracking-wider">正確答案：???</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Main Chart -->
+                    <div class="lg:col-span-2 bg-slate-900/80 p-8 rounded-3xl border border-slate-800 shadow-2xl flex flex-col animate-fade-in" style="animation-delay: 0.2s;">
+                        <h3 class="text-xl font-bold text-slate-400 mb-6 flex items-center gap-2">
+                            <i data-lucide="bar-chart-2" class="w-5 h-5"></i> 觀眾猜測分佈
+                        </h3>
+                        <div class="flex-1 relative min-h-[350px]">
+                            <canvas id="resultsChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Panel -->
+                    <div class="lg:col-span-1 flex flex-col gap-6 animate-fade-in" style="animation-delay: 0.4s;">
+                        <div class="bg-slate-900/80 p-8 rounded-3xl border border-slate-800 shadow-2xl flex flex-col items-center">
+                             <h3 class="text-xl font-bold text-slate-400 mb-6">答對率統計</h3>
+                             <div class="relative w-56 h-56 mb-8">
+                                 <canvas id="accuracyChart"></canvas>
+                             </div>
+                        </div>
+
+                        <div class="bg-slate-900/80 p-6 rounded-3xl border border-slate-800 shadow-2xl space-y-4">
+                            <div class="flex justify-between items-center p-4 bg-slate-950 rounded-xl border border-slate-800">
+                                <span class="text-slate-400 font-medium">總票數</span>
+                                <span id="total-votes" class="text-2xl font-bold text-white">0</span>
+                            </div>
+                            <div class="flex justify-between items-center p-4 bg-slate-950 rounded-xl border border-slate-800">
+                                <span class="text-slate-400 font-medium">正確人數</span>
+                                <span id="correct-votes" class="text-2xl font-bold text-green-400">0</span>
+                            </div>
+                            <div class="flex justify-between items-center p-4 bg-slate-950 rounded-xl border border-slate-800">
+                                <span class="text-slate-400 font-medium">正確率</span>
+                                <span id="accuracy-rate" class="text-2xl font-bold text-blue-400">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Vote Application -->
+    <div id="app-vote" class="fixed inset-0 bg-slate-950 z-50 hidden flex flex-col">
+        <header class="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-center shrink-0 shadow-lg relative z-10">
+            <h1 class="text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="vote" class="text-blue-500"></i>
+                歌唱比賽投票
+            </h1>
+        </header>
+        
+        <div class="flex-1 overflow-y-auto p-6 pb-32 custom-scrollbar">
+            
+            <!-- Wait State -->
+            <div id="vote-wait-msg" class="text-center mt-24 hidden animate-fade-in">
+                <div class="relative w-24 h-24 mx-auto mb-6">
+                    <div class="absolute inset-0 bg-blue-500/20 rounded-full animate-ping"></div>
+                    <div class="relative w-full h-full bg-slate-800 rounded-full flex items-center justify-center border border-slate-700">
+                        <i data-lucide="coffee" class="text-slate-400 w-10 h-10"></i>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-3">請稍候</h2>
+                <p class="text-slate-400">投票尚未開始或已結束</p>
+            </div>
+
+            <!-- Vote Active State -->
+            <div id="vote-container" class="hidden max-w-md mx-auto animate-fade-in">
+                <div class="bg-slate-900 rounded-3xl p-1 border border-slate-800 shadow-2xl overflow-hidden">
+                    <div class="bg-slate-800/50 p-6 text-center border-b border-slate-800">
+                        <div class="inline-block p-1 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 mb-4 shadow-lg">
+                            <img id="vote-singer-preview" src="" class="w-28 h-28 rounded-full border-4 border-slate-900 object-cover bg-slate-800">
+                        </div>
+                        <h3 class="text-xl font-bold text-white">猜猜我是誰？</h3>
+                        <p class="text-sm text-slate-400 mt-1">請從下方選擇您認為的歌手</p>
+                    </div>
+
+                    <div class="p-6 bg-slate-900">
+                        <form id="vote-form" class="space-y-4">
+                            <div id="vote-options-list" class="space-y-3">
+                                <!-- Options injected via JS -->
+                            </div>
+                            
+                            <div class="pt-4">
+                                <button type="submit" id="btn-submit-vote" class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-blue-900/30 transform active:scale-95 transition flex items-center justify-center gap-2">
+                                    確認送出
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success State -->
+            <div id="vote-success-msg" class="hidden text-center mt-24 animate-fade-in">
+                <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-green-500/10 text-green-400 mb-6 ring-1 ring-green-500/30 shadow-[0_0_30px_-5px_rgba(74,222,128,0.2)]">
+                    <i data-lucide="check" class="w-12 h-12"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-white mb-3">投票成功！</h2>
+                <p class="text-slate-400">您的選擇已記錄<br>請關注大螢幕查看結果</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- IP Configuration Modal -->
+    <div id="ip-config-modal" class="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center hidden backdrop-blur-sm">
+        <div class="bg-slate-900 p-8 rounded-2xl border border-slate-700 shadow-2xl max-w-md w-full mx-4">
+            <div class="flex items-start gap-4 mb-4">
+                <div class="p-3 bg-blue-900/30 rounded-xl text-blue-400">
+                    <i data-lucide="network" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-white">設定主機位址</h3>
+                    <p class="text-slate-400 text-sm mt-1">讓手機順利連線</p>
+                </div>
+            </div>
+            <p class="text-slate-300 mb-6 text-sm leading-relaxed bg-slate-800 p-4 rounded-lg border border-slate-700">
+                若在 <strong>Localhost (本機)</strong> 運行，手機掃描 QR Code 將無法連線。請輸入您電腦的區域網路 IP。<br><br>
+                <span class="text-slate-500 text-xs">提示：在電腦終端機輸入 ipconfig (Windows) 或 ifconfig (Mac) 查看 IPv4。</span>
+            </p>
+            
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Base URL (Host + Port)</label>
+            <input type="text" id="input-ip-url" class="w-full bg-slate-950 border border-slate-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6 font-mono" placeholder="http://192.168.X.X:5500">
+            
+            <div class="flex gap-4">
+                <button id="btn-close-ip" class="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl transition">取消</button>
+                <button id="btn-save-ip" class="flex-1 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition shadow-lg shadow-blue-900/30">儲存設定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl border border-slate-700 flex items-center gap-3 translate-y-24 transition-all duration-300 z-50 pointer-events-none whitespace-nowrap">
+        <i data-lucide="info" class="text-blue-400 w-5 h-5"></i>
+        <span id="toast-msg" class="font-medium">Notification</span>
+    </div>
+
+    <script type="module" src="app_frontend.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
