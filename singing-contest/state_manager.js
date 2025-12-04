@@ -1,37 +1,23 @@
 import { CONTEST_STATES, INITIAL_SINGERS } from './mock_data.js';
-
-const STORAGE_KEY = 'singing_contest_data';
-const CHANNEL_NAME = 'singing_contest_channel';
+import { db, stateRef } from './firebase.js'; // 匯入 Firebase
+import { onValue, set, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"; // 匯入 RTDB 方法
 
 class StateManager {
     constructor() {
-        this.channel = new BroadcastChannel(CHANNEL_NAME);
         this.listeners = [];
-        this.state = this.loadState();
+        this.state = this.getInitialState(); // 先用初始 state
 
-        this.channel.onmessage = (event) => {
-            this.state = event.data;
-            this.notify();
-        };
-
-        window.addEventListener('storage', (e) => {
-            if (e.key === STORAGE_KEY && e.newValue) {
-                this.state = JSON.parse(e.newValue);
+        // 監聽 Firebase 變化，即時同步到所有裝置
+        onValue(stateRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                this.state = data;
                 this.notify();
             }
         });
     }
 
-    loadState() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-            const parsed = JSON.parse(stored);
-
-            if (parsed.contestState === 'REVEAL') parsed.contestState = CONTEST_STATES.REVEAL_FINAL;
-            if (!parsed.qrBaseUrl) parsed.qrBaseUrl = null;
-            if (!parsed.topCandidates) parsed.topCandidates = [];
-            return parsed;
-        }
+    getInitialState() {
         return {
             contestState: CONTEST_STATES.IDLE,
             currentSingerId: null,
@@ -45,9 +31,8 @@ class StateManager {
     }
 
     saveState() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
-        this.channel.postMessage(this.state);
-        this.notify();
+        set(stateRef, this.state); // 寫入 Firebase
+        this.notify(); // 通知本地 listeners
     }
 
     subscribe(callback) {
@@ -60,6 +45,7 @@ class StateManager {
         this.listeners.forEach(cb => cb(this.state));
     }
 
+    // 以下方法不變，但 saveState 現在會寫到 Firebase
     setQrBaseUrl(url) {
         this.state.qrBaseUrl = url ? url.replace(/\/$/, "") : null;
         this.saveState();
@@ -84,7 +70,6 @@ class StateManager {
         this.saveState();
     }
 
-
     revealCandidates() {
         const currentId = this.state.currentSingerId;
         if (!currentId) return;
@@ -92,19 +77,14 @@ class StateManager {
         const votesObj = this.state.votes[currentId] || {};
         let entries = Object.entries(votesObj).map(([name, count]) => ({ name, count }));
 
-
-
+        // 隨機打亂後排序 (不變)
         for (let i = entries.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [entries[i], entries[j]] = [entries[j], entries[i]];
         }
-
-
         entries.sort((a, b) => b.count - a.count);
 
-
         const top5 = entries.slice(0, 5);
-
 
         this.state.topCandidates = top5.map(entry => {
             const singerInfo = this.state.singers.find(s => s.name === entry.name);
@@ -118,7 +98,6 @@ class StateManager {
         this.state.contestState = CONTEST_STATES.REVEAL_CANDIDATES;
         this.saveState();
     }
-
 
     revealFinal() {
         this.state.contestState = CONTEST_STATES.REVEAL_FINAL;
@@ -177,17 +156,7 @@ class StateManager {
     }
 
     fullReset() {
-        localStorage.removeItem(STORAGE_KEY);
-        this.state = {
-            contestState: CONTEST_STATES.IDLE,
-            currentSingerId: null,
-            singers: INITIAL_SINGERS,
-            votes: {},
-            topCandidates: [],
-            startTime: null,
-            endTime: null,
-            qrBaseUrl: null
-        };
+        this.state = this.getInitialState();
         this.saveState();
     }
 }
