@@ -1,0 +1,24 @@
+# .gitignore
+
+# 環境變數檔案（最重要！千萬不能上傳）
+.env.local
+.env
+.env.production
+*.env
+
+# Node.js 相關
+node_modules/
+dist/
+build/
+
+# Firebase 本地快取
+.firebase/
+
+# 作業系統垃圾檔
+.DS_Store
+Thumbs.db
+
+# 編輯器垃圾
+.vscode/
+.idea/
+*.log
