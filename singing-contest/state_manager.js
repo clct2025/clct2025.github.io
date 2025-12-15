@@ -1,4 +1,4 @@
-// state_manager.js —— 最終完美版（已修所有問題）
+// state_manager.js —— 真正的最終完美版（所有函數齊全、無當機）
 import { CONTEST_STATES, INITIAL_SINGERS } from './mock_data.js';
 import { db, stateRef } from './firebase.js';
 import { onValue, set, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -54,7 +54,6 @@ class StateManager {
         callback(this.state); // 立即呼叫一次
     }
 
-    // 關鍵：所有寫入都用 await 確保完成後才更新畫面
     async save() {
         try {
             await set(stateRef, this.state);
@@ -64,7 +63,8 @@ class StateManager {
         }
     }
 
-    // === 以下全部改成 async + await ===
+    // ==================== 所有操作函數 ====================
+
     async setQrBaseUrl(url) {
         this.state.qrBaseUrl = url ? url.replace(/\/$/, "") : null;
         await this.save();
@@ -90,10 +90,36 @@ class StateManager {
     }
 
     async revealCandidates() {
-        const votesObj = this.state.votes[this.state.currentSingerId] || {};
+        // 防呆檢查 1: 沒有選擇歌手
+        if (!this.state.currentSingerId) {
+            console.warn('沒有選擇當前歌手，無法顯示前5高票');
+            return;
+        }
+
+        // 防呆檢查 2: 該歌手是否還存在（可能已被刪除）
+        const currentSinger = this.state.singers.find(s => s.id === this.state.currentSingerId);
+        if (!currentSinger) {
+            console.warn('當前歌手已被刪除，自動重置狀態');
+            this.state.currentSingerId = null;
+            this.state.contestState = CONTEST_STATES.IDLE;
+            this.state.topCandidates = [];
+            await this.save();
+            return;
+        }
+
+        // 取得該歌手的票數（安全取值）
+        const votesObj = (this.state.votes && this.state.votes[this.state.currentSingerId]) || {};
         let entries = Object.entries(votesObj).map(([name, count]) => ({ name, count }));
 
-        // 隨機打亂
+        // 如果還沒有人投票
+        if (entries.length === 0) {
+            this.state.topCandidates = [];
+            this.state.contestState = CONTEST_STATES.REVEAL_CANDIDATES;
+            await this.save();
+            return;
+        }
+
+        // 隨機打亂後排序
         for (let i = entries.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [entries[i], entries[j]] = [entries[j], entries[i]];
@@ -151,7 +177,7 @@ class StateManager {
 
     async deleteSinger(id) {
         this.state.singers = this.state.singers.filter(s => s.id !== id);
-        if (this.state.votes[id]) delete this.state.votes[id];
+        if (this.state.votes && this.state.votes[id]) delete this.state.votes[id];
         if (this.state.currentSingerId === id) {
             this.state.currentSingerId = null;
             this.state.contestState = CONTEST_STATES.IDLE;
