@@ -15,4 +15,4 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const db = getDatabase(app);
-export const stateRef = ref(db, 'contestState');
+export const stateRef = ref(db, 'singers');
