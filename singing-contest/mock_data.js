@@ -11,20 +11,116 @@ export const CONTEST_STATES = {
 export const INITIAL_SINGERS = [
     { 
         id: 'singer-1', 
-        name: '神秘歌手 A', 
-        photo: 'https://images.unsplash.com/photo-1516280440614-6697288d5d38?q=80&w=1000&auto=format&fit=crop', 
-        description: '擅長高音與轉音' 
+        name: '朱進豪', 
+        photo: './images/朱進豪.jpg', 
+    
     },
     { 
         id: 'singer-2', 
-        name: '神秘歌手 B', 
-        photo: 'https://images.unsplash.com/photo-1520785643438-5bf77931f493?q=80&w=1000&auto=format&fit=crop', 
-        description: '深情款款的低音炮' 
+        name: '江綺雯', 
+        photo: './images/江綺雯.jpg', 
+         
     },
     { 
         id: 'singer-3', 
-        name: '神秘歌手 C', 
-        photo: 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=1000&auto=format&fit=crop', 
-        description: '爆發力十足的搖滾嗓' 
-    }
+        name: '何文欣', 
+        photo: './images/何文欣.jpg', 
+        
+    },
+        { 
+        id: 'singer-4', 
+        name: '何柏翹', 
+        photo: './images/何柏翹.jpg', 
+         
+    },
+        { 
+        id: 'singer-5', 
+        name: '余家寶', 
+        photo: './images/余家寶.jpg', 
+        
+    },
+        { 
+        id: 'singer-6', 
+        name: '岑希', 
+        photo: './images/岑希.jpg', 
+        
+    },
+        { 
+        id: 'singer-7', 
+        name: '李嘉俊老師', 
+        photo: './images/李嘉俊老師.jpg', 
+        
+    },
+        { 
+        id: 'singer-8', 
+        name: '車瑞盈老師', 
+        photo: './images/車瑞盈老師.jpg', 
+         
+    },
+        { 
+        id: 'singer-9', 
+        name: '翁芷晴', 
+        photo: './images/翁芷晴.jpg', 
+        
+    },
+        { 
+        id: 'singer-10', 
+        name: '曹陽老師', 
+        photo: './images/曹陽老師.jpg', 
+         
+    },
+        { 
+        id: 'singer-11', 
+        name: '梁瑋盈', 
+        photo: './images/梁瑋盈.jpg', 
+         
+    },
+        { 
+        id: 'singer-12', 
+        name: '陳兆榮老師', 
+        photo: './images/陳兆榮老師.jpg', 
+         
+    },
+        { 
+        id: 'singer-13', 
+        name: '陳樂謙', 
+        photo: './images/陳樂謙.jpg', 
+        
+    },
+        { 
+        id: 'singer-14', 
+        name: '麥頌文老師', 
+        photo: './images/麥頌文老師.jpg', 
+        
+    },
+        { 
+        id: 'singer-15', 
+        name: '詹力熹', 
+        photo: './images/詹力熹.jpg', 
+         
+    },
+        { 
+        id: 'singer-16', 
+        name: '管翊霖', 
+        photo: './images/管翊霖.jpg', 
+        
+    },
+        { 
+        id: 'singer-17', 
+        name: '蔡藝琳老師', 
+        photo: './images/蔡藝琳老師.jpg', 
+         
+    },
+        { 
+        id: 'singer-18', 
+        name: '鄧天灝', 
+        photo: './images/鄧天灝.jpg', 
+        
+    },
+        { 
+        id: 'singer-19', 
+        name: '魏栢翹', 
+        photo: './images/魏栢翹.jpg', 
+       
+    },
 ];
