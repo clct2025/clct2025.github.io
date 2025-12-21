@@ -122,5 +122,5 @@ export const INITIAL_SINGERS = [
         name: '魏栢翹', 
         photo: './images/魏栢翹.jpg', 
        
-    },
+    }
 ];
