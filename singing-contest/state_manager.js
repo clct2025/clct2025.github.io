@@ -1,7 +1,7 @@
 // state_manager.js —— 真正的最終完美版（所有函數齊全、無當機）
 import { CONTEST_STATES, INITIAL_SINGERS } from './mock_data.js';
-import { db, stateRef } from './firebase.js';
-import { onValue, set, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { db } from './firebase.js';  // 改這行，去掉 stateRef import
+import { onValue, set, get, ref } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";  // 加 ref
 
 class StateManager {
     constructor() {
@@ -9,7 +9,7 @@ class StateManager {
         this.state = this.getDefaultState();
 
         // 監聽 Firebase 即時變化
-        onValue(stateRef, (snapshot) => {
+        onValue(ref(db), (snapshot) => {  // 改成 ref(db) 監聽根
             const data = snapshot.val();
             if (data) {
                 this.state = data;
@@ -23,9 +23,9 @@ class StateManager {
 
     async initFirebaseIfEmpty() {
         try {
-            const snapshot = await get(stateRef);
+            const snapshot = await get(ref(db));
             if (!snapshot.exists()) {
-                await set(stateRef, this.getDefaultState());
+                await set(ref(db), this.getDefaultState());
             }
         } catch (error) {
             console.error("初始化失敗:", error);
@@ -56,7 +56,7 @@ class StateManager {
 
     async save() {
         try {
-            await set(stateRef, this.state);
+            await set(ref(db), this.state);
             console.log('狀態已成功儲存到 Firebase');
         } catch (error) {
             console.error('儲存失敗:', error);
@@ -187,7 +187,14 @@ class StateManager {
 
     async fullReset() {
         this.state = this.getDefaultState();
-        await set(stateRef, this.state);
+        await set(ref(db), this.state);
+    }
+
+    // 新增方法：從 mock_data.js 強制更新 singers
+    async updateSingersFromMock() {
+        this.state.singers = INITIAL_SINGERS;
+        await this.save();
+        console.log('從 mock_data.js 更新歌手列表成功');
     }
 }
 

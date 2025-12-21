@@ -87,54 +87,66 @@ function renderDashboard(state) {
         configInput.value = state.qrBaseUrl || '';
     }
 
-    // 渲染歌手列表
+    // 渲染歌手列表，加更新按鈕
     const list = document.getElementById('singers-list');
-    list.innerHTML = state.singers.map(singer => {
-        const isSelected = state.currentSingerId === singer.id;
+    list.innerHTML = `
+        <button id="btn-update-from-mock" class="mb-6 px-4 py-2 bg-green-600 hover:bg-green-500 text-white text-sm font-bold rounded-lg transition flex items-center gap-2">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i> 從 mock_data.js 更新歌手列表
+        </button>
+        ${state.singers.map(singer => {
+            const isSelected = state.currentSingerId === singer.id;
 
-        // 安全取票數：避免 state.votes 為 undefined
-        const singerVotes = (state.votes && state.votes[singer.id]) || {};
-        const voteCount = Object.values(singerVotes).reduce((a, b) => a + b, 0);
+            // 安全取票數：避免 state.votes 為 undefined
+            const singerVotes = (state.votes && state.votes[singer.id]) || {};
+            const voteCount = Object.values(singerVotes).reduce((a, b) => a + b, 0);
 
-        return `
-        <div class="bg-slate-800 rounded-xl p-4 border ${isSelected ? 'border-blue-500 ring-1 ring-blue-500' : 'border-slate-700'} transition hover:border-slate-600 relative group">
-            <div class="flex gap-4">
-                <div class="relative w-20 h-20 shrink-0">
-                    <img src="${singer.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(singer.name) + '&background=random'}" 
-                         class="w-full h-full object-cover rounded-lg bg-slate-900">
-                    <label class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition cursor-pointer rounded-lg">
-                        <i data-lucide="upload" class="text-white w-6 h-6"></i>
-                        <input type="file" accept="image/*" class="hidden" onchange="window.uploadPhoto('${singer.id}', this)">
-                    </label>
-                </div>
-                
-                <div class="flex-1 min-w-0">
-                    <input type="text" value="${singer.name}" 
-                        class="bg-transparent font-bold text-white text-lg w-full focus:outline-none focus:border-b border-blue-500 mb-1"
-                        onchange="window.updateSingerName('${singer.id}', this.value.trim())">
-                    
-                    <p class="text-xs text-slate-400 mb-2">ID: ${singer.id}</p>
-                    
-                    <div class="flex items-center gap-2">
-                        <span class="px-2 py-1 rounded bg-slate-900 text-xs text-slate-300 border border-slate-700">
-                            票數: ${voteCount}
-                        </span>
-                        ${isSelected ? 
-                            `<span class="px-2 py-1 rounded bg-blue-900/30 text-blue-400 text-xs border border-blue-800 font-bold">當前選中</span>` : 
-                            `<button onclick="window.selectSinger('${singer.id}')" class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600 text-xs text-white transition">設為當前</button>`
-                        }
+            return `
+            <div class="bg-slate-800 rounded-xl p-4 border ${isSelected ? 'border-blue-500 ring-1 ring-blue-500' : 'border-slate-700'} transition hover:border-slate-600 relative group">
+                <div class="flex gap-4">
+                    <div class="relative w-20 h-20 shrink-0">
+                        <img src="${singer.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(singer.name) + '&background=random'}" 
+                             class="w-full h-full object-cover rounded-lg bg-slate-900">
+                        <label class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition cursor-pointer rounded-lg">
+                            <i data-lucide="upload" class="text-white w-6 h-6 transition"></i>
+                            <input type="file" accept="image/*" class="hidden" onchange="window.uploadPhoto('${singer.id}', this)">
+                        </label>
                     </div>
-                </div>
+                    
+                    <div class="flex-1 min-w-0">
+                        <input type="text" value="${singer.name}" 
+                            class="bg-transparent font-bold text-white text-lg w-full focus:outline-none focus:border-b border-blue-500 mb-1"
+                            onchange="window.updateSingerName('${singer.id}', this.value.trim())">
+                        
+                        <p class="text-xs text-slate-400 mb-2">ID: ${singer.id}</p>
+                        
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 rounded bg-slate-900 text-xs text-slate-300 border border-slate-700">
+                                票數: ${voteCount}
+                            </span>
+                            ${isSelected ? 
+                                `<span class="px-2 py-1 rounded bg-blue-900/30 text-blue-400 text-xs border border-blue-800 font-bold">當前選中</span>` : 
+                                `<button onclick="window.selectSinger('${singer.id}')" class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600 text-xs text-white transition">設為當前</button>`
+                            }
+                        </div>
+                    </div>
 
-                <button onclick="window.deleteSinger('${singer.id}')" class="absolute top-2 right-2 p-2 text-slate-500 hover:text-red-400 transition">
-                    <i data-lucide="trash-2" class="w-4 h-4"></i>
-                </button>
+                    <button onclick="window.deleteSinger('${singer.id}')" class="absolute top-2 right-2 p-2 text-slate-500 hover:text-red-400 transition">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
             </div>
-        </div>
-        `;
-    }).join('');
+            `;
+        }).join('')}
+    `;
 
     lucide.createIcons();
+
+    // 加事件給新按鈕
+    document.getElementById('btn-update-from-mock').addEventListener('click', async () => {
+        if (confirm('確定從 mock_data.js 更新嗎？這會覆蓋 /singers，但不影響其他資料。')) {
+            await stateManager.updateSingersFromMock();
+        }
+    });
 }
 
 function updateStatusPanel(state) {
