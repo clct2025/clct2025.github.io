@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【重要通知】7月31日學校電力檢查及暫停服務安排 | Important Notice</title>
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --primary-light: #eff6ff;
+            --accent-color: #d97706;
+            --accent-light: #fffbeeb;
+            --text-dark: #1f2937;
+            --text-muted: #4b5563;
+            --border-color: #e5e7eb;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans HK", "Microsoft JhengHei", sans-serif;
+            background-color: #f3f4f6;
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 850px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Top Header Banner */
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: #ffffff;
+            padding: 32px 28px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            margin-bottom: 12px;
+            backdrop-filter: blur(4px);
+        }
+
+        .header-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: #fef08a;
+        }
+
+        .header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .header h2 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* Quick Info Bar */
+        .info-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            padding: 24px 28px;
+            background-color: #f8fafc;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .info-card {
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 10px;
+            border-left: 4px solid #2563eb;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .info-card.warning {
+            border-left-color: var(--accent-color);
+        }
+
+        .info-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* Content Area */
+        .content {
+            padding: 28px;
+        }
+
+        .notice-section {
+            margin-bottom: 32px;
+        }
+
+        .notice-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .greeting {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+
+        .intro-text {
+            margin-bottom: 16px;
+            color: #374151;
+            text-align: justify;
+        }
+
+        .highlight-badge {
+            background-color: #fef3c7;
+            color: #92400e;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* Arrangements List */
+        .arrangement-list {
+            list-style: none;
+            margin: 16px 0;
+            padding: 0;
+        }
+
+        .arrangement-item {
+            position: relative;
+            padding: 12px 16px 12px 48px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #edf2f7;
+        }
+
+        .arrangement-number {
+            position: absolute;
+            left: 14px;
+            top: 12px;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .email-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .email-link:hover {
+            text-decoration: underline;
+        }
+
+        .closing {
+            margin-top: 16px;
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--border-color), transparent);
+            margin: 32px 0;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #f8fafc;
+            padding: 16px 28px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 10px;
+            }
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            .header h2 {
+                font-size: 0.95rem;
+            }
+            .content {
+                padding: 20px 16px;
+            }
+            .info-bar {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <div class="header-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M13 2L3 14h7v8l10-12h-7z"/>
+            </svg>
+        </div>
+        <h1>【重要通知】7月31日學校電力檢查及暫停服務安排</h1>
+        <h2>[Important Notice] School Power Maintenance & Service Arrangements on July 31</h2>
+    </div>
+
+    <!-- Quick Info Cards -->
+    <div class="info-bar">
+        <div class="info-card warning">
+            <div class="info-title">檢查日期 / Date</div>
+            <div class="info-value">2026年7月31日 (星期五) / July 31, 2026 (Fri)</div>
+        </div>
+        <div class="info-card">
+            <div class="info-title">辦公時間 / Office Hours</div>
+            <div class="info-value">08:30 – 17:00</div>
+        </div>
+        <div class="info-card">
+            <div class="info-title">緊急聯絡 / Urgent Contact</div>
+            <div class="info-value"><a href="mailto:admin@clctmc.edu.hk" class="email-link">admin@clctmc.edu.hk</a></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        
+        <!-- Chinese Section -->
+        <div class="notice-section">
+            <div class="section-header">
+                <span class="section-title">中文版通知</span>
+            </div>
+            
+            <div class="greeting">各位家長、同學及坊眾：</div>
+            
+            <p class="intro-text">
+                本校將於 <strong>2026年7月31日（星期五）</strong> 進行電力檢查及維修，屆時校園將會<span class="highlight-badge">暫停電力供應</span>。
+            </p>
+            
+            <p style="font-weight: 600; margin-top: 12px; color: var(--text-dark);">當天學校之運作安排將調整如下：</p>
+            
+            <ul class="arrangement-list">
+                <li class="arrangement-item">
+                    <div class="arrangement-number">1</div>
+                    <strong>服務影響：</strong>學校當天只能提供 <span class="highlight-badge">有限度服務</span>。
+                </li>
+                <li class="arrangement-item">
+                    <div class="arrangement-number">2</div>
+                    <strong>辦公時間：</strong>調整為 <strong>上午 8:30 至 下午 5:00</strong>。
+                </li>
+                <li class="arrangement-item">
+                    <div class="arrangement-number">3</div>
+                    <strong>聯絡方式：</strong>停電期間電話系統可能受影響，如有急事，請電郵至 <a href="mailto:admin@clctmc.edu.hk" class="email-link">admin@clctmc.edu.hk</a> 聯絡本校。
+                </li>
+            </ul>
+            
+            <p class="closing">不便之處，敬請見諒。</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- English Section -->
+        <div class="notice-section">
+            <div class="section-header">
+                <span class="section-title">English Version</span>
+            </div>
+            
+            <div class="greeting">Dear Parents, Students, and Community Members,</div>
+            
+            <p class="intro-text">
+                Please be informed that a routine power maintenance and inspection will be conducted at our school on <strong>July 31, 2026 (Friday)</strong>. Electricity supply will be suspended.
+            </p>
+            
+            <p style="font-weight: 600; margin-top: 12px; color: var(--text-dark);">The arrangements for the day are as follows:</p>
+            
+            <ul class="arrangement-list">
+                <li class="arrangement-item">
+                    <div class="arrangement-number">1</div>
+                    <strong>Services:</strong> Only <span class="highlight-badge">Limited Services</span> will be available.
+                </li>
+                <li class="arrangement-item">
+                    <div class="arrangement-number">2</div>
+                    <strong>Office Hours:</strong> 8:30 AM – 5:00 PM.
+                </li>
+                <li class="arrangement-item">
+                    <div class="arrangement-number">3</div>
+                    <strong>Contact:</strong> As the telephone system may be affected, please email us at <a href="mailto:admin@clctmc.edu.hk" class="email-link">admin@clctmc.edu.hk</a> for urgent matters.
+                </li>
+            </ul>
+            
+            <p class="closing">We apologize for any inconvenience caused. Thank you for your understanding.</p>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2026 School Notice Board | 行政處 Administrative Office
+    </div>
+</div>
+
+</body>
+</html>
